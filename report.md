@@ -51,24 +51,24 @@
 我們採用了 ResNet-CRNN-Attention 的混合架構：
 1. 特徵提取層 (ResNet-CNN)：
    - 使用帶有殘差連接 (Residual Connection) 的卷積層。
-   - 輸入：$(Batch, 1, 88, 100)$ 。
+   - 輸入： $(Batch, 1, 88, 100)$ 。
    - 作用：提取局部的和弦形狀與音程關係，殘差結構防止深層網絡的梯度消失。
-   - 輸出維度：高度被壓縮至 5，通道數擴增至 256。
+   - 輸出維度：高度被壓縮至 5，通道數擴增至 256。\
 ![code_RB](./figure/code_RB.png)
 
-2. 序列建模層 (Bi-LSTM)：
+1. 序列建模層 (Bi-LSTM)：
    - 將 CNN 輸出的特徵圖展平為時間序列向量。
    - 使用雙向 LSTM (Bi-Directional LSTM)，同時捕捉過去與未來的上下文資訊。
-   - 作用：理解旋律的走向與解決（Resolution）。
+   - 作用：理解旋律的走向與解決（Resolution）。\
 ![code_LSTM](./figure/code_LSTM.png)
 
-3. 注意力機制 (Self-Attention)：
+1. 注意力機制 (Self-Attention)：
    - 替代傳統的全局平均池化 (GAP)。
-   - 作用：讓模型自動賦予權重。例如，當某個時間點出現「跑調」或「斷裂」時，Attention 機制會聚焦於該時刻，判定其為負樣本的依據。
+   - 作用：讓模型自動賦予權重。例如，當某個時間點出現「不協調」時，Attention 機制會聚焦於該時刻，判定其為負樣本的依據。\
 ![code_SA](./figure/code_SA.png)
 
-4. 分類頭 (Classifier)：
-   - 全連接層 + Sigmoid 激活函數，輸出 $P(Real|x)$ 。
+1. 分類頭 (Classifier)：
+   - 全連接層 + Sigmoid 激活函數，輸出 $P(Real|x)$ 。\
 ![code_MC](./figure/code_MC.png)
 
 
